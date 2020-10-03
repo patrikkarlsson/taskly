@@ -10,7 +10,7 @@ const getters = {
 
 const actions = {
   async fetch({ commit, dispatch }, user) {
-    const currentUser = await fb.db.ref('users/' + user.uid).once('value')
+    const currentUser = await fb.db.ref('users/' + fb.auth.currentUser.uid).once('value')
     if (currentUser.val()) {
       commit('setCurrentUser', currentUser.val())
       dispatch('auth/authenticated', true, { root: true })
