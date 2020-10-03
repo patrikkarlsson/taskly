@@ -1,17 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { mapGetters } from 'vuex'
+import { currentUser, isAuthenticated } from '@/store/getters'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  computed: {
+    ...mapGetters({
+      currentUser,
+      isAuthenticated,
+    }),
+  },
+  watch: {
+   isAuthenticated(isAuthenticated) {
+     if (isAuthenticated && this.$route.name !== 'Dashboard') {
+       this.$router.push({ name: 'Dashboard' })
+     } else if (!isAuthenticated && this.$route.name === 'Dashboard') {
+       this.$router.push({ name: 'Login' })
+     }
+   }
   }
 }
 </script>
